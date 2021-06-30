@@ -1,8 +1,8 @@
-Lavoro svolto da:
+Work done by:
 	- Alex Di Stefano
 
-Come compilare: make compile
+How to compile: make compile
 
-Come eseguire un peer: make run-peer ADDRESS=address PORT=port
+How to run a peer: make run-peer ADDRESS = address PORT = port
 
-Come eseguire il server Discovery: make run-discovery
+How to run the Discovery server: make run-discovery
