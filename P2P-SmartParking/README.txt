@@ -1,5 +1,4 @@
-Work done by:
-	- Alex Di Stefano
+Work done by: Alex Di Stefano
 
 How to compile: make compile
 
