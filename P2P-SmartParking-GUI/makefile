@@ -1,14 +1,14 @@
 compile:
-	@echo -en '--- Compilazione --- \n'
+	@echo -en '--- Compilation --- \n'
 	javac ./peer/GUIPeer.java
 	javac ./discovery_server/GUIDiscovery.java
 	
 run-peer:
-	@echo -en '--- Esecuzione peer --- \n'
+	@echo -en '--- Peer execution --- \n'
 	java peer.GUIPeer
 
 run-discovery:
-	@echo -en '--- Esecuione Discovery server --- \n'
+	@echo -en '--- Discovery server execution --- \n'
 	java discovery_server.GUIDiscovery
 
 clean:
