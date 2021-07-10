@@ -45,7 +45,6 @@ public class Discovery implements Runnable{
     // Method that control if a peer is already registered inside network
     private boolean isIn(String address, int port) throws UnknownHostException{
         address = Inet4Address.getByName(address).getHostAddress().toString();
-        System.out.println(address);
         for(int i = 0; i < getNumPeers(); ++i){
             if(overlayNetwork[i].getAddress().getHostAddress().toString().equals(address) && overlayNetwork[i].getPort() == port)
                 return true;
