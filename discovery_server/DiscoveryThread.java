@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 
 public class DiscoveryThread extends Thread{
@@ -22,7 +23,7 @@ public class DiscoveryThread extends Thread{
 	// Method in order to compute the response for the peers
 	// request format: typeRequest,address,port
 	// typeRequest --> 0 registration, 1 overlay network
-    private synchronized InetSocketAddress[] computeResponse(String request){
+    private synchronized InetSocketAddress[] computeResponse(String request) throws UnknownHostException{
 		String[] parts = request.split(",");
 		// If the peer wants to only register
 		if(parts[0].equals("0")){
