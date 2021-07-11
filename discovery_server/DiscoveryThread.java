@@ -12,12 +12,12 @@ import java.net.UnknownHostException;
 public class DiscoveryThread extends Thread{
     private Socket socket;			// Socket that serves to handle the request
     private Discovery discovery;	// It needs to get the number of peers
-    private GUIDiscovery sg;
+    private GUIDiscovery gui;
 	// Constructor
-    public DiscoveryThread(Socket socket, Discovery discovery, GUIDiscovery sg){
+    public DiscoveryThread(Socket socket, Discovery discovery, GUIDiscovery gui){
         this.socket = socket;
         this.discovery = discovery;
-		this.sg = sg;
+		this.gui = gui;
     }
 
 	// Method in order to compute the response for the peers
@@ -29,10 +29,10 @@ public class DiscoveryThread extends Thread{
 		if(parts[0].equals("0")){
 			String address = parts[1];
 			int port = Integer.valueOf(parts[2].trim());
-			sg.appendEvent("Registration: " + parts[1] + ", " + parts[2]);
+			gui.appendEvent("Registration: " + parts[1] + ", " + parts[2]);
 			// Add the peer inside the network
 			discovery.addPeer(address, port);
-			sg.appendEvent("\nThere are " + discovery.getNumPeers() + " peers inside the network\n");
+			gui.appendEvent("\nThere are " + discovery.getNumPeers() + " peers inside the network\n");
 		}
 		// If the peer wants to know who there is inside the network
 		else if(parts[0].equals("1")){

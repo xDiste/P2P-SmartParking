@@ -68,11 +68,8 @@ public class Discovery implements Runnable{
 
     // Method in order to shutdown the servers
     public void stop() {
-		synchronized(this){
-			this.isStopped = true;
-	        notifyAll();				// notify the server is closing
-	    }
 		try {
+            this.isStopped = true;
 			this.serverSocket.close();	// close the socket that handle the requests
 			this.threadPool.shutdown();	// end the current trasmission
 			gui.appendEvent("\n############################\nStopping Server.\n\nServer is being stop.\nReject latest request waiting for response cause 'Closing Server'");

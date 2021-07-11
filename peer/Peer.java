@@ -37,17 +37,19 @@ public class Peer extends Thread{
 
     public void run() {
 		// Peer create a peer-server
-		new PeerServer(this, this.gui).start();
+		PeerServer peerServer = new PeerServer(this, this.gui);
+		peerServer.start();
         
         // Peer create a peer-client
-        new PeerClient(this, this.gui).start();
-
+        PeerClient peerClient = new PeerClient(this, this.gui);
+		peerClient.start();
+		/*
 		try {
 			Thread.sleep(60 * 1000);	// seconds until stop (default 1 minute)
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
         if(!isClosed())
-            this.termination();	// end
+            this.termination();	// end */
 	}
 }

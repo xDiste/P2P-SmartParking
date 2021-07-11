@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class PeerServer extends Thread{
 	private ServerSocket serverSocket;				// Socket that serves to receive the requestes
@@ -18,6 +19,20 @@ public class PeerServer extends Thread{
 		this.peer = peer;
 		this.threadPool = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 		this.gui = gui;
+	}
+
+	// Method in order to shutdown the servers
+    public void Stop() {
+		try {
+			this.serverSocket.close();	// close the socket that handle the requests
+			this.threadPool.shutdown();	// end the current trasmission
+			
+			if (!this.threadPool.awaitTermination(30, TimeUnit.SECONDS)) {
+       			this.threadPool.shutdownNow(); // cancel currently executing tasks
+            }
+		} catch (Exception e) {
+			gui.appendEvent("Error closing server");
+		}
 	}
 	
 	public void run(){
@@ -34,15 +49,11 @@ public class PeerServer extends Thread{
 				// create thread to execute the request
 				this.threadPool.execute(new PeerServerThread(clientSocket, peer));
 			} catch (IOException e) {
-				break;
+				continue;
 			}
 		}
-		try {
-			gui.appendServer("Closing peer-server...");
-			this.serverSocket.close();	// Close peer-server
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		gui.appendServer("Closing peer-server...");
+		this.Stop();
 		gui.appendServer("Peer-server closed.");
     }
 }

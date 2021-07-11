@@ -76,7 +76,6 @@ public class PeerClient extends Thread{
 		// Close connection with the Discovery server
 		discoverySocket.close();
 		gui.appendEvent("Retrieved informations.");
-		return;
 	}
 	
 	// Ask to the other peers inside the network if they are inside the parking
