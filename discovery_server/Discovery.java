@@ -2,11 +2,9 @@ package discovery_server;
 
 // Imports
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -43,17 +41,16 @@ public class Discovery implements Runnable{
     }
 
     // Method that control if a peer is already registered inside network
-    private boolean isIn(String address, int port) throws UnknownHostException{
-        address = Inet4Address.getByName(address).getHostAddress().toString();
+    private boolean isIn(String address, int port){
         for(int i = 0; i < getNumPeers(); ++i){
-            if(overlayNetwork[i].getAddress().getHostAddress().toString().equals(address) && overlayNetwork[i].getPort() == port)
+            if(overlayNetwork[i].getAddress().getHostName().toString().equals(address) && overlayNetwork[i].getPort() == port)
                 return true;
         }
         return false;
     }
 
     // Method that add a peer in overlay network
-    public void addPeer(String address, int port) throws UnknownHostException {
+    public void addPeer(String address, int port) {
         if(!isIn(address, port)){
             InetSocketAddress inetSocketAddress = new InetSocketAddress(address, port);
             overlayNetwork[getNumPeers()] =  inetSocketAddress;
@@ -68,8 +65,11 @@ public class Discovery implements Runnable{
 
     // Method in order to shutdown the servers
     public void stop() {
+		synchronized(this){
+			this.isStopped = true;
+	        notifyAll();				// notify the server is closing
+	    }
 		try {
-            this.isStopped = true;
 			this.serverSocket.close();	// close the socket that handle the requests
 			this.threadPool.shutdown();	// end the current trasmission
 			gui.appendEvent("\n############################\nStopping Server.\n\nServer is being stop.\nReject latest request waiting for response cause 'Closing Server'");

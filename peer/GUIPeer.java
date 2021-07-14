@@ -68,7 +68,7 @@ public class GUIPeer extends JFrame implements ActionListener, WindowListener{
 		client.setCaretPosition(client.getText().length() - 1);
 	}
 	
-	// startStop or stop when clicked
+	// startStop or stop where clicked
 	public void actionPerformed(ActionEvent e) {
         if(peer != null) {
             peer.termination();

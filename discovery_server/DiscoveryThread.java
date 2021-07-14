@@ -6,33 +6,32 @@ import java.io.DataOutputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 
 public class DiscoveryThread extends Thread{
     private Socket socket;			// Socket that serves to handle the request
     private Discovery discovery;	// It needs to get the number of peers
-    private GUIDiscovery gui;
+    private GUIDiscovery sg;
 	// Constructor
-    public DiscoveryThread(Socket socket, Discovery discovery, GUIDiscovery gui){
+    public DiscoveryThread(Socket socket, Discovery discovery, GUIDiscovery sg){
         this.socket = socket;
         this.discovery = discovery;
-		this.gui = gui;
+		this.sg = sg;
     }
 
 	// Method in order to compute the response for the peers
 	// request format: typeRequest,address,port
 	// typeRequest --> 0 registration, 1 overlay network
-    private synchronized InetSocketAddress[] computeResponse(String request) throws UnknownHostException{
+    private synchronized InetSocketAddress[] computeResponse(String request){
 		String[] parts = request.split(",");
 		// If the peer wants to only register
 		if(parts[0].equals("0")){
 			String address = parts[1];
 			int port = Integer.valueOf(parts[2].trim());
-			gui.appendEvent("Registration: " + parts[1] + ", " + parts[2]);
+			sg.appendEvent("Registration: " + parts[1] + ", " + parts[2]);
 			// Add the peer inside the network
 			discovery.addPeer(address, port);
-			gui.appendEvent("\nThere are " + discovery.getNumPeers() + " peers inside the network\n");
+			sg.appendEvent("\nThere are " + discovery.getNumPeers() + " peers inside the network\n");
 		}
 		// If the peer wants to know who there is inside the network
 		else if(parts[0].equals("1")){
