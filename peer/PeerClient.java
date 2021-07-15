@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 
 public class PeerClient extends Thread{
@@ -98,18 +100,38 @@ public class PeerClient extends Thread{
 				input = new DataInputStream(peerServer.getInputStream());
 				
 				// Read the answer from the other peers
-				byte[] b = new byte[5];	// max length for server response (pre-established)
+				byte[] b = new byte[100];	// max length for server response (pre-established)
 				input.read(b);
 				String response = new String(b).trim();
 
-				// If it is inside I count it
-				if(response.equals("true")) {
-					++nInside;
+				// Split the answer from each peer
+				//[0] --> Status; [1] --> num of peer inside; [0] --> timestamp
+				String[] parts = response.split(",");
+
+				Timestamp now = new Timestamp(new Date().getTime()); 
+
+				// If the timestamp does not exceed the threshold
+				if(!parts[2].trim().equals("null") && (now.getTime() - Timestamp.valueOf(parts[2].trim()).getTime()) < Peer.threshold){
+					
+					this.peer.setCountInside(Integer.parseInt(parts[1].trim()));
+					// If timestamp is good I keep it the same 
+					this.peer.setTimestamp(Timestamp.valueOf(parts[2].trim()));	//rotto qui
+
+					gui.appendEvent(this.peer.getCountInside() + " car inside the parking");
+					return Integer.parseInt(parts[1].trim());
+				}
+				else{
+					// If it is inside I count it
+					if(parts[0].equals("true")) {
+						++nInside;
+					}
 				}
 				// Close connection
 				peerServer.close();
 			}
 		}
+		this.peer.setCountInside(nInside);
+		this.peer.setTimestamp(new Timestamp(new Date().getTime()));
 		gui.appendEvent(nInside + " car inside the parking");
 		return nInside;
 	}
