@@ -5,7 +5,7 @@ Implemented intelligent parking using peer-to-peer architecture with Discovery s
 The idea is to consider the nodes as if they were the cars that exchange information in and out with the aim of always knowing how many spaces are available 
 in the parking lot.
 
-![Communication Peers and Discovery](https://user-images.githubusercontent.com/59747500/124516148-53e79c80-dde1-11eb-9230-7220fa894d0f.png)
+<img src="https://user-images.githubusercontent.com/59747500/125799407-ec888d65-8abe-4a73-88e3-ab3cf3f55443.png" width="600" />
 
 "Peer1 Client" represents the client side of the peer, "Peer2 Server" represents the server side of another peer.
 
