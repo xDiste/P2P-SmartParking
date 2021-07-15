@@ -115,7 +115,7 @@ public class PeerClient extends Thread{
 					
 					this.peer.setCountInside(Integer.parseInt(parts[1].trim()));
 					// If timestamp is good I keep it the same 
-					this.peer.setTimestamp(Timestamp.valueOf(parts[2].trim()));	//rotto qui
+					this.peer.setTimestamp(Timestamp.valueOf(parts[2].trim()));
 
 					gui.appendEvent(this.peer.getCountInside() + " car inside the parking");
 					return Integer.parseInt(parts[1].trim());
